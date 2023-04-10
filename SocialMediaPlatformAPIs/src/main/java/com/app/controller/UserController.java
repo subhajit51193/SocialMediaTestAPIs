@@ -45,4 +45,6 @@ public class UserController {
 		User user = userService.deleteUserById(id);
 		return new ResponseEntity<User>(user,HttpStatus.ACCEPTED);
 	}
+	
+	
 }

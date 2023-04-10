@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,27 +69,61 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User deleteUserById(Integer id) throws UserException {
 		
-		if (id == null) {
+//		if (id == null) {
+//			throw new UserException("Not found");
+//		}
+//		else {
+//			Optional<User> opt = userRepository.findById(id);
+//			if (opt == null) {
+//				throw new UserException("Not found");
+//			}
+//			else {
+//				if (opt.isEmpty()) {
+//					throw new UserException("Not found");
+//				}
+//				else {
+//					User user = opt.get();
+//					userRepository.delete(user);
+//					return user;
+//				}
+//			}
+//		}
+		
+		Optional<User> opt = userRepository.findById(id);
+		if (opt.isEmpty()) {
 			throw new UserException("Not found");
 		}
 		else {
-			Optional<User> opt = userRepository.findById(id);
-			if (opt == null) {
-				throw new UserException("Not found");
-			}
-			else {
-				if (opt.isEmpty()) {
-					throw new UserException("Not found");
-				}
-				else {
-					User user = opt.get();
-					userRepository.delete(user);
-					return user;
-				}
-			}
+			User user = opt.get();
+			userRepository.delete(user);
+			return user;
 		}
 		
 		
+	}
+
+	@Override
+	public Integer getTotalNoOfUsers() throws UserException {
+		
+		List<User> users = userRepository.findAll();
+		if (users.isEmpty()) {
+			throw new UserException("Empty List");
+		}
+		else {
+			return users.size();
+		}
+	}
+
+	@Override
+	public List<User> getTop5Users() throws UserException {
+		
+		List<User> users = userRepository.getTop5Users();
+		if (users.isEmpty()) {
+			throw new UserException("Empty List");
+		}
+		else {
+			return users;
+		}
 	}
 
 	
